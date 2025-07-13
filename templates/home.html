@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>J.O.I Engine Oil Store</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>J.O.I Engine Oil Store</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/cart">Cart</a>
+            <a href="/checkout">Checkout</a>
+        </nav>
+    </header>
+
+    <div class="product-container">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename=product.image) }}">
+                <h3>{{ product.name }}</h3>
+                <p>#{{ product.price }}</p>
+                <button>Add to cart</button>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
