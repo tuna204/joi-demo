@@ -3,45 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.O.I Engine Oil Store</title>
+    <title>J.O.I Oil</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='j.oi.png') }}">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>J.O.I Engine Oil Store</h1>
-            <nav>
-                <a href="/">Home</a>
-                <a href="/cart">Cart</a>
-                <a href="/checkout">Checkout</a>
-            </nav>
+  <header>
+    <div class="container header-flex">
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='joi-logo.png') }}" alt="J.O.I Oil Logo" class="logo">
+            <p class="slogan">Your engine is our concern</p>
         </div>
-    </header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/cart">Cart</a>
+            <a href="/checkout">Checkout</a>
+        </nav>
+    </div>
+</header>
 
-    <section class="hero">
-        <div class="container">
-            <h2>Quality Engine Oils for Your Vehicle</h2>
-            <p>Explore our range of premium lubricants and keep your engine running smoothly.</p>
-        </div>
-    </section>
-
-    <section class="products">
-        <div class="container product-grid">
-            {% for product in products %}
-            <div class="product-card">
-                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
-                <h3>{{ product.name }}</h3>
-                <p>#{{ product.price }}</p>
-                <button>Add to Cart</button>
+    <section class="slider">
+        <div class="slide active">
+            <img src="{{ url_for('static', filename='slide1.jpg') }}" alt="Heading to Work">
+            <div class="caption">
+                <h2>On Your Way to Work?</h2>
+                <p>Don’t get stranded, J.O.I get you covered. Order anytime, anywhere and we dleiver Fast — check your engine oil level!</p>
             </div>
-            {% endfor %}
         </div>
+        <div class="slide">
+            <img src="{{ url_for('static', filename='slide2.jpg') }}" alt="Order Online">
+            <div class="caption">
+                <h2>Order Engine Oil Online</h2>
+                <p>Fast delivery, trusted brands like Mobil, Castrol, Shell...</p>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="{{ url_for('static', filename='slide3.jpg') }}" alt="Make Payment">
+            <div class="caption">
+                <h2>Secure Payment</h2>
+                <p>Choose Pay on Delivery or Pay Online</p>
+            </div>
+        </div>
+        <button class="prev" onclick="showPrevSlide()">&#10094;</button>
+        <button class="next" onclick="showNextSlide()">&#10095;</button>
     </section>
+
+    <section class="store-layout container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+  <!-- Search Bar -->
+  <input type="text" id="searchInput" placeholder="Search by name..." onkeyup="filterAll()">
+
+  <!-- Oil Type Filter -->
+  <div class="filter-group">
+    <h4>Oil Type</h4>
+    <label><input type="checkbox" class="filter-type" value="synthetic"> Synthetic</label><br>
+    <label><input type="checkbox" class="filter-type" value="semi-synthetic"> Semi-Synthetic</label>
+  </div>
+
+  <!-- Vehicle Compatibility -->
+  <div class="filter-group">
+    <h4>Vehicle</h4>
+    <label><input type="checkbox" class="filter-vehicle" value="car"> Car</label><br>
+    <label><input type="checkbox" class="filter-vehicle" value="motorcycle"> Motorcycle</label><br>
+    <label><input type="checkbox" class="filter-vehicle" value="truck"> Truck</label>
+  </div>
+
+  <!-- Brand Filter -->
+  <div class="filter-group">
+    <h4>Brand</h4>
+    <label><input type="checkbox" class="filter-brand" value="mobil"> Mobil</label><br>
+    <label><input type="checkbox" class="filter-brand" value="total"> Total</label><br>
+    <label><input type="checkbox" class="filter-brand" value="shell"> Shell</label>
+  </div>
+</aside>
+
+
+  <!-- Product Grid -->
+  <div class="product-grid">
+      {% for product in products %}
+      <div class="product-card {{ product.type }}">
+          <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+          <h3>{{ product.name }}</h3>
+          <p>#{{ product.price }}</p>
+          <button class="cart-btn">Add to Cart</button>
+      </div>
+      {% endfor %}
+  </div>
+</section>
+
 
     <footer>
         <div class="container">
             <p>&copy; 2025 J.O.I Engine Oil Store. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        let slides = document.querySelectorAll('.slide');
+        let index = 0;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+        }
+
+        function showNextSlide() {
+            index = (index + 1) % slides.length;
+            showSlide(index);
+        }
+
+        function showPrevSlide() {
+            index = (index - 1 + slides.length) % slides.length;
+            showSlide(index);
+        }
+
+        setInterval(showNextSlide, 5000);
+    </script>
+
+    <script>
+    function filterProducts() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.querySelectorAll('.product-card');
+
+        cards.forEach(card => {
+            let title = card.querySelector('h3').innerText.toLowerCase();
+            if (title.includes(input)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function filterByType(type) {
+        let cards = document.querySelectorAll('.product-card');
+
+        cards.forEach(card => {
+            if (type === 'all' || card.classList.contains(type)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    </script>
+
 </body>
 </html>
